@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import './styles/Form.css';
 
-const Form = ({ addNewTask }) => {
+const Form = ({ addNewTask, newTaskRef }) => {
     const [input, setInput] = useState('');
     const [visible, setVisible] = useState(false);
 
@@ -29,6 +29,7 @@ const Form = ({ addNewTask }) => {
                 type='text'
                 value={input}
                 onChange={(e) => setInput(e.target.value)}
+                ref={newTaskRef}
             />
             {visible && <label className='error visible'>Поле пустое</label>}
             <button onClick={handleBtn} className='btn-reset btn' type='submit'>Добавить дело</button>

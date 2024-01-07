@@ -33,3 +33,7 @@
     border-radius: 15px;
     border: 1px solid teal;
 }
+
+.edit__btn:not(:nth-last-child) {
+    margin-right: 5px;
+}
