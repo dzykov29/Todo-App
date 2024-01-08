@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import './App.css';
 import TodoList from './components/TodoList';
 import Modal from './components/UI/Modal';
@@ -9,15 +9,29 @@ function App() {
   const [modal, setModal] = useState(false)
   const newTaskRef = useRef();
 
+  // Загрузка задач из localStorage при монтировании компонента
+  useEffect(() => {
+    const storedTasks = JSON.parse(localStorage.getItem('todoTasks')) || [];
+    setTodoTasks(storedTasks);
+  }, []);
+
+  // Сохранение задач в localStorage при изменении todoTasks
+  useEffect(() => {
+    localStorage.setItem('todoTasks', JSON.stringify(todoTasks));
+  }, [todoTasks]);
+
   const handleAddTask = (newTask) => {
     setTodoTasks((prevTasks) => [...prevTasks, newTask]);
     setModal(false)
   }
 
   const handleDeleteTask = (id) => {
-    setTodoTasks((prevTasks) => prevTasks.filter((prevTask) => prevTask.id !== id));
-    console.log(todoTasks);
-  }
+    setTodoTasks((prevTasks) => {
+      const updatedTasks = prevTasks.filter((prevTask) => prevTask.id !== id);
+      localStorage.setItem('todoTasks', JSON.stringify(updatedTasks));
+      return updatedTasks;
+    });
+  };
 
   const handleUpdateTaskDone = (id, done) => {
     setTodoTasks((prevTasks) => 
